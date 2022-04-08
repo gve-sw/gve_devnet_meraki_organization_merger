@@ -37,13 +37,18 @@ def getOrgNetworks(base_url, headers, org_id):
     return networks
 
 
-def getNetworkDevices(base_url, headers, net_id):
+def getAccessPoints(base_url, headers, net_id):
     net_devices_endpoint = "networks/{}/devices".format(net_id)
     response = requests.get(base_url+net_devices_endpoint, headers=headers)
 
     net_devices = json.loads(response.text)
+    access_points = []
 
-    return net_devices
+    for device in net_devices:
+        if 'MR' in device['model']:
+            access_points.append(device)
+
+    return access_points
 
 
 def removeDeviceFromNetwork(base_url, headers, serial, net_id):

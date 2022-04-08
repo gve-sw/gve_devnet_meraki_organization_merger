@@ -45,12 +45,12 @@ default_rules = [
 
 src_org_id = getOrgID(base_url, headers, src_org_name)
 if src_org_id is None:
-    print("No orgsnization found with name {}.".format(src_org_name))
+    print("No organization found with name {}.".format(src_org_name))
     sys.exit(1)
 
 dest_org_id = getOrgID(base_url, headers, dest_org_name)
 if src_org_id is None:
-    print("No orgsnization found with that name {}.".format(dest_org_name))
+    print("No organization found with that name {}.".format(dest_org_name))
     sys.exit(1)
 
 networks = getOrgNetworks(base_url, headers, src_org_id)
@@ -58,7 +58,7 @@ if not networks:
     print("No networks exist in organization {}".format(src_org_name))
     sys.exit(1)
 
-all_devices = [] #this list will hold all the device information for every device in the src organization
+all_devices = [] #this list will hold all the device information for every AP in the src organization
 old_networks = {} #this dictionary will map the src network ids to their names
 new_networks = {} #this dictionary will map the dest network names to their ids, the dest network names will be the same as the src network names
 networks_to_ssids = {} #map the new network ids to the SSIDs that it will have
@@ -71,10 +71,10 @@ organization'''
 for network in networks:
     ssids = getSSIDs(base_url, headers, network["id"])
 
-    network_devices = getNetworkDevices(base_url, headers, network["id"])
+    network_aps = getAccessPoints(base_url, headers, network["id"])
 
     old_networks[network["id"]] = network["name"]
-    all_devices += network_devices
+    all_devices += network_aps
 
     new_network = createOrgNetwork(base_url, headers, dest_org_id, network)
     new_networks[new_network["name"]] = new_network["id"]
