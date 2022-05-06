@@ -96,6 +96,18 @@ for network in networks:
 source network'''
 for network, ssids in networks_to_ssids.items():
     for ssid in ssids:
+        if 'encryptionMode' in ssid.keys() and ssid['authMode'] != 'psk':
+            del ssid['encryptionMode']
+
+        if 'radiusFailoverPolicy' in ssid.keys() and ssid['radiusFailoverPolicy'] == None:
+            del ssid['radiusFailoverPolicy']
+
+        if 'radiusLoadBalancingPolicy' in ssid.keys() and ssid['radiusLoadBalancingPolicy'] == None:
+            del ssid['radiusLoadBalancingPolicy']
+
+        if need_radius:
+            ssid["radiusServers"] = radius_servers
+
         edit_ssid_status = editSSID(base_url, headers, network, ssid)
         if edit_ssid_status != 200:
             print("There was an issue editing the SSID {} of network {}".format(ssid["number"], network))

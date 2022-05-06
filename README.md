@@ -27,11 +27,25 @@ This prototype uses the Meraki APIs to copy the networks and devices from one or
 
 ## Installation/Configuration
 1. Clone this repository with `git clone https://github.com/gve-sw/gve_devnet_meraki_organization_merger`
-2. Add Meraki API key, source organization name, and destination organization name to environment variables:
+2. Add Meraki API key, source organization name, destination organization name, and radius server information (if necessary) to environment variables:
 ```python
 API_KEY = "API key goes here"
 src_org_name = "source organization name goes here"
 dest_org_name = "destination organization name goes here"
+need_radius = False #if RADIUS servers are needed, change this to True
+#Add RADIUS server credentials here, to add more radius servers, add more elements to the array
+#If one of the keys is not needed, delete that line
+#If no RADIUS servers are needed, delete this information
+radius_servers = [
+    {
+        "openRoamingCertificateId": "id of the Openroaming Certificate attached to radius server",
+        "port": "udp port the RADIUS server listens on for Access-requests",
+        "caCertificate": "certificate used for authorization for the RADSEC Server",
+        "host": "ip address of your RADIUS server",
+        "secret": "RADIUS client shared secret",
+        "radsecEnabled": False #Boolean value, change as needed
+    }
+]
 ```
 3. Set up a Python virtual environment. Make sure Python 3 is installed in your environment, and if not, you may download Python [here](https://www.python.org/downloads/). Once Python 3 is installed in your environment, you can activate the virtual environment with the instructions found [here](https://docs.python.org/3/tutorial/venv.html).
 4. Install the requirements with `pip3 install -r requirements.txt`
